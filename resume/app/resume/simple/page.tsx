@@ -4,6 +4,14 @@ import React, { useState } from 'react'
 import { collection, addDoc } from "firebase/firestore"; 
 import { db } from '@/app/firebase/config';
 
+interface EmploymentEntry {
+  jobTitle?: string;
+  location?: string;
+  startDate?: string;
+  endDate?: string;
+  responsibilities?: string;
+}
+
 const Page = () => {
   // Add state for form data
   const [resumeData, setResumeData] = useState({
@@ -14,15 +22,7 @@ const Page = () => {
     },
     professionalSummary: '',
     skills: '',
-
-    employmentHistory: [{
-      jobTitle: '',
-      location: '', 
-      startDate: '',
-      endDate: '',
-      responsibilities: ''
-    }],
-    
+    employmentHistory: [] as EmploymentEntry[],
     education: {
       schoolName: '',
       location: '',
@@ -221,7 +221,7 @@ console.log("Document written with ID: ", docRef.id);
               onClick={() => setResumeData({
                 personalInfo: { fullName: '', address: '', email: '' },
                 professionalSummary: '',
-                employmentHistory: [{ jobTitle: '', location: '', startDate: '', endDate: '', responsibilities: '' }],
+                employmentHistory: [],
                 education: { schoolName: '', location: '', startDate: '', endDate: '', qualifications: '' },
                 links: [{ platform: 'linkedin', url: '' }]
               })}
