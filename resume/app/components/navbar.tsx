@@ -1,8 +1,30 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Login from '../login/page'
+import { onAuthStateChanged, User } from 'firebase/auth'
+import { auth } from '../firebase/config'
 function navbar() {
+    const [user, setUser] = useState<User | null>(null)
+    const [login, setLogin] = useState(false)
+    React.useEffect(() => {
+
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            const uid = user.uid;
+            setLogin(true)
+            console.log(uid)
+            setUser(user)
+            console.log(user)
+
+  
+          } 
+        });
+    }, [])
+    
+
+
   return (
     <>
 {/* Navigation Bar */}
@@ -32,13 +54,17 @@ function navbar() {
               <Link href="/blog" className="text-gray-600 hover:text-gray-900">
                 Career Blog
               </Link>
-              <Link 
+              {login ? (
+              <h1 className='text-gray-600 hover:text-gray-900  rounded-md px-2 py-2 bg-blue-200 '>{user?.email?.slice(0, 6)}...</h1>
+              ) : 
+                <Link 
                 href="/signup" 
-                className="text-gray-600 hover:text-gray-900"
-              >
+              className="text-gray-600 hover:text-gray-900"
+            >
 
-                Sign in
-              </Link>
+              Sign in
+            </Link>
+              }
               <Link
                 href="/login"
                 className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"

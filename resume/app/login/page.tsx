@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Navbar from '../components/navbar'
-import {  signInWithEmailAndPassword } from "firebase/auth";
+import {  onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase/config';
 import { useRouter } from 'next/navigation';
 
@@ -11,31 +11,44 @@ const Login = () => {
     email: '',
     password: ''
   })
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
+
+React.useEffect(() => {
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.push('/resume')
+        const uid = user.uid;
+        console.log(uid)
+      } 
+    });
+}, [router])
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
     // Handle login logic here
     console.log('Login attempt:', formData)
 
+    signInWithEmailAndPassword(auth, formData.email, formData.password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        alert('Login successful')
 
-signInWithEmailAndPassword(auth, formData.email, formData.password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    alert('Login successful')
+        router.push('/resume') 
 
-    router.push('/resume') 
-
-
-
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    alert(errorMessage)
-  });
+        // ...
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        alert(errorMessage)
+      })
+      .finally(() => {
+        setLoading(false)
+      });
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,9 +95,13 @@ signInWithEmailAndPassword(auth, formData.email, formData.password)
               />
             </div>
           </div>
+          
           <button
+          loading={loading} 
+          
+          
             type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+            className=" w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
           >
             Sign in
           </button>

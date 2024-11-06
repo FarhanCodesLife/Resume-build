@@ -4,6 +4,7 @@ import Image from 'next/image'
 import simpleimage from '../../public/carousel_cv20.webp'
 import professionalimage from '../../public/carousel_cv14.webp'
 import coolimage from '../../public/carousel_cv15.webp'
+import Link from 'next/link'
 
 const Page = () => {
   return (
@@ -26,9 +27,11 @@ const Page = () => {
                 className="object-cover rounded"
               />
             </div>
+            <Link href="/resume/simple">
             <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
               Use Template
-            </button>
+                    </button>
+            </Link>
           </div>
 
            {/* Template Card */}
@@ -43,9 +46,11 @@ const Page = () => {
                 className="object-cover rounded"
               />
             </div>
+            <Link href="/resume/professional">
             <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
               Use Template
             </button>
+            </Link>
           </div>
 
 
@@ -63,9 +68,11 @@ const Page = () => {
                 className="object-cover rounded"
               />
             </div>
+            <Link href="/resume/cool">
             <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
               Use Template
             </button>
+            </Link>
           </div>
 
           {/* Add more template cards here */}

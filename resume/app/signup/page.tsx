@@ -2,15 +2,35 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Navbar from '../components/navbar'
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase/config';
 const Signup = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+
+  React.useEffect(() => {
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          router.push('/resume')
+          const uid = user.uid;
+          console.log(uid)
+          return uid
+
+        } 
+      });
+  }, [router])
+  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
+
+
 
 
     if (password !== confirmPassword) {
@@ -18,26 +38,22 @@ const router = useRouter()
       return
     }
 
-
-    // Add your registration logic here
     console.log('Sign up attempt with:', email, password)
 
-
-
-createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed up 
-    const user = userCredential.user;
-    // ...
-    console.log(user)
-    alert('Sign up successful')
-    router.push('/login')
-  })
-  .catch((error) => {
-    const errorMessage = error.message;
-    alert(errorMessage)
-    // ..
-  });
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user)
+        alert('Sign up successful')
+        router.push('/login')
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        alert(errorMessage)
+      })
+      .finally(() => {
+        setLoading(false)
+      });
   }
 
   return (
@@ -48,6 +64,7 @@ createUserWithEmailAndPassword(auth, email, password)
         <h1 className="text-3xl font-bold text-center text-gray-900">Sign Up</h1>
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="space-y-2">
+        
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email
             </label>
@@ -87,6 +104,7 @@ createUserWithEmailAndPassword(auth, email, password)
             />
           </div>
           <button
+          loading={loading} 
             type="submit"
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
