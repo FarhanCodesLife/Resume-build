@@ -1,22 +1,43 @@
 'use client'
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import Navbar from '../components/navbar'
-
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../firebase/config';
 const Signup = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  // const router = useRouter()
-
+const router = useRouter()
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+
     if (password !== confirmPassword) {
       alert('Passwords do not match')
       return
     }
+
+
     // Add your registration logic here
     console.log('Sign up attempt with:', email, password)
+
+
+
+createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    // ...
+    console.log(user)
+    alert('Sign up successful')
+    router.push('/login')
+  })
+  .catch((error) => {
+    const errorMessage = error.message;
+    alert(errorMessage)
+    // ..
+  });
   }
 
   return (

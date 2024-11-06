@@ -2,17 +2,40 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Navbar from '../components/navbar'
+import {  signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../firebase/config';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   })
+  const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Handle login logic here
     console.log('Login attempt:', formData)
+
+
+signInWithEmailAndPassword(auth, formData.email, formData.password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    alert('Login successful')
+
+    router.push('/resume') 
+
+
+
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(errorMessage)
+  });
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
