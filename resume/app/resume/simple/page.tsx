@@ -22,7 +22,13 @@ const Page = () => {
     },
     professionalSummary: '',
     skills: '',
-    employmentHistory: [] as EmploymentEntry[],
+    employmentHistory: [{
+      jobTitle: '',
+      location: '',
+      startDate: '',
+      endDate: '',
+      responsibilities: ''
+    }] as EmploymentEntry[],
     education: {
       schoolName: '',
       location: '',
@@ -59,6 +65,7 @@ const docRef = await addDoc(collection(db, "simpleresumes"), {
 console.log("Document written with ID: ", docRef.id);
     // Add your Firestore push logic here
     console.log('Resume Data:', resumeData)
+    alert(`Resume saved with ID: ${docRef.id}`);
 
   }
 
@@ -125,27 +132,37 @@ console.log("Document written with ID: ", docRef.id);
                 <input
                   type="text"
                   placeholder="Job Title, Company"
+                  value={resumeData.employmentHistory[0]?.jobTitle || ''}
+                  onChange={(e) => handleInputChange('employmentHistory', 'jobTitle', e.target.value)}
                   className="w-full mb-2 p-2 border rounded"
                 />
                 <input
                   type="text"
                   placeholder="Location"
+                  value={resumeData.employmentHistory[0]?.location || ''}
+                  onChange={(e) => handleInputChange('employmentHistory', 'location', e.target.value)}
                   className="w-full mb-2 p-2 border rounded"
                 />
                 <div className='flex gap-2 mb-2'>
                   <input
                     type="text"
                     placeholder="Start Date"
+                    value={resumeData.employmentHistory[0]?.startDate || ''}
+                    onChange={(e) => handleInputChange('employmentHistory', 'startDate', e.target.value)}
                     className="w-1/2 p-2 border rounded"
                   />
                   <input
                     type="text"
                     placeholder="End Date"
+                    value={resumeData.employmentHistory[0]?.endDate || ''}
+                    onChange={(e) => handleInputChange('employmentHistory', 'endDate', e.target.value)}
                     className="w-1/2 p-2 border rounded"
                   />
                 </div>
                 <textarea
                   placeholder="Job responsibilities..."
+                  value={resumeData.employmentHistory[0]?.responsibilities || ''}
+                  onChange={(e) => handleInputChange('employmentHistory', 'responsibilities', e.target.value)}
                   className="w-full p-2 border rounded h-24"
                 />
               </div>
@@ -159,28 +176,38 @@ console.log("Document written with ID: ", docRef.id);
               <input
                 type="text"
                 placeholder="School Name"
+                value={resumeData.education.schoolName}
+                onChange={(e) => handleInputChange('education', 'schoolName', e.target.value)}
                 className="w-full mb-2 p-2 border rounded"
               />
               <input
                 type="text"
                 placeholder="Location"
+                value={resumeData.education.location}
+                onChange={(e) => handleInputChange('education', 'location', e.target.value)}
                 className="w-full mb-2 p-2 border rounded"
               />
               <div className='flex gap-2 mb-2'>
                 <input
                   type="text"
                   placeholder="Start Date"
+                  value={resumeData.education.startDate}
+                  onChange={(e) => handleInputChange('education', 'startDate', e.target.value)}
                   className="w-1/2 p-2 border rounded"
                 />
                 <input
                   type="text"
                   placeholder="End Date"
+                  value={resumeData.education.endDate}
+                  onChange={(e) => handleInputChange('education', 'endDate', e.target.value)}
                   className="w-1/2 p-2 border rounded"
                 />
               </div>
               <input
                 type="text"
                 placeholder="Qualifications"
+                value={resumeData.education.qualifications}
+                onChange={(e) => handleInputChange('education', 'qualifications', e.target.value)}
                 className="w-full p-2 border rounded"
               />
             </div>
@@ -191,7 +218,11 @@ console.log("Document written with ID: ", docRef.id);
             <h2 className='text-xl font-bold mb-2'>LINKS</h2>
             <div className='space-y-2'>
               <div className='flex gap-2'>
-                <select className="w-1/4 p-2 border rounded">
+                <select 
+                  className="w-1/4 p-2 border rounded"
+                  value={resumeData.links[0].platform}
+                  onChange={(e) => handleInputChange('links', 'platform', e.target.value)}
+                >
                   <option value="linkedin">LinkedIn</option>
                   <option value="github">GitHub</option>
                   <option value="portfolio">Portfolio</option>
@@ -200,6 +231,8 @@ console.log("Document written with ID: ", docRef.id);
                 <input
                   type="url"
                   placeholder="https://..."
+                  value={resumeData.links[0].url}
+                  onChange={(e) => handleInputChange('links', 'url', e.target.value)}
                   className="w-3/4 p-2 border rounded"
                 />
               </div>
@@ -221,9 +254,15 @@ console.log("Document written with ID: ", docRef.id);
               onClick={() => setResumeData({
                 personalInfo: { fullName: '', address: '', email: '' },
                 professionalSummary: '',
-                employmentHistory: [],
-                education: { schoolName: '', location: '', startDate: '', endDate: '', qualifications: '' },
-                links: [{ platform: 'linkedin', url: '' }]
+                employmentHistory: [{
+                  jobTitle: '',
+                  location: '',
+                  startDate: '',
+                  endDate: '',
+                  responsibilities: ''
+                }] as EmploymentEntry[],
+                education: { schoolName: '', location: '', startDate: '', endDate: '', qualifications: '', degree: '' },
+                links: [{ platform: 'linkedin', url: '' }],
               })}
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
             >
