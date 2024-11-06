@@ -3,6 +3,8 @@ import Navbar from '@/app/components/Navbar'
 import React, { useState } from 'react'
 import { collection, addDoc } from "firebase/firestore"; 
 import { db } from '@/app/firebase/config';
+import { useRouter } from 'next/navigation';
+
 
 interface EmploymentEntry {
   jobTitle?: string;
@@ -42,6 +44,7 @@ const Page = () => {
     }]
   })
 
+  const router = useRouter()
   // Add new function to handle adding links
   const handleAddLink = () => {
     setResumeData(prev => ({
@@ -93,10 +96,14 @@ const Page = () => {
 const docRef = await addDoc(collection(db, "simpleresumes"), {
   resumeData
 });
+alert(docRef.id)
 console.log("Document written with ID: ", docRef.id);
     // Add your Firestore push logic here
     console.log('Resume Data:', resumeData)
-    alert(`Resume saved with ID: ${docRef.id}`);
+    localStorage.setItem('resumeId', docRef.id)
+
+    router.push(`/resume/simple/download`)
+
     
 
   }
