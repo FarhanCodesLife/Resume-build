@@ -21,7 +21,7 @@ const Page = () => {
       email: ''
     },
     professionalSummary: '',
-    skills: '',
+    skills: [] as string[],
     employmentHistory: [{
       jobTitle: '',
       location: '',
@@ -42,16 +42,47 @@ const Page = () => {
     }]
   })
 
-  // Handle input changes
-  const handleInputChange = (section: string, field: string, value: string) => {
+  // Add new function to handle adding links
+  const handleAddLink = () => {
+    setResumeData(prev => ({
+      ...prev,
+      links: [...prev.links, { platform: 'linkedin', url: '' }]
+    }));
+  }
+
+  // Update handleInputChange to handle multiple links
+  const handleInputChange = (section: string, field: string, value: string, index: number = 0) => {
     setResumeData(prev => ({
       ...prev,
       [section]: section === 'employmentHistory' || section === 'links'
-        ? prev[section].map((item, index) => index === 0 ? { ...item, [field]: value } : item)
+        ? prev[section].map((item, i) => i === index ? { ...item, [field]: value } : item)
         : section === 'personalInfo' || section === 'education'
           ? { ...prev[section], [field]: value }
           : value
     }))
+  }
+
+  // Add new function to handle skills
+  const handleSkillsChange = (value: string) => {
+    const skillsArray = value.split(',').map(skill => skill.trim());
+    setResumeData(prev => ({
+      ...prev,
+      skills: skillsArray
+    }));
+  }
+
+  // Add new function to handle adding employment entries
+  const handleAddEmployment = () => {
+    setResumeData(prev => ({
+      ...prev,
+      employmentHistory: [...prev.employmentHistory, {
+        jobTitle: '',
+        location: '',
+        startDate: '',
+        endDate: '',
+        responsibilities: ''
+      }]
+    }));
   }
 
   // Handle form submission
@@ -124,48 +155,74 @@ console.log("Document written with ID: ", docRef.id);
             />
           </div>
 
+          {/* Add Skills section after Professional Summary */}
+          <div className='mb-6'>
+            <h2 className='text-xl font-bold mb-2'>SKILLS</h2>
+            <textarea
+              placeholder="Enter your skills (comma-separated)..."
+              value={resumeData.skills.join(', ')}
+              onChange={(e) => handleSkillsChange(e.target.value)}
+              className="w-full p-2 border rounded h-24"
+            />
+            <p className="text-sm text-gray-500 mt-1">
+              Separate skills with commas (e.g., JavaScript, React, Node.js)
+            </p>
+          </div>
+
           {/* Employment History */}
           <div className='mb-6'>
             <h2 className='text-xl font-bold mb-2'>EMPLOYMENT HISTORY</h2>
             <div className='space-y-4'>
-              <div className='border p-4 rounded'>
-                <input
-                  type="text"
-                  placeholder="Job Title, Company"
-                  value={resumeData.employmentHistory[0]?.jobTitle || ''}
-                  onChange={(e) => handleInputChange('employmentHistory', 'jobTitle', e.target.value)}
-                  className="w-full mb-2 p-2 border rounded"
-                />
-                <input
-                  type="text"
-                  placeholder="Location"
-                  value={resumeData.employmentHistory[0]?.location || ''}
-                  onChange={(e) => handleInputChange('employmentHistory', 'location', e.target.value)}
-                  className="w-full mb-2 p-2 border rounded"
-                />
-                <div className='flex gap-2 mb-2'>
+              {resumeData.employmentHistory.map((job, index) => (
+                <div key={index} className='border p-4 rounded'>
                   <input
                     type="text"
-                    placeholder="Start Date"
-                    value={resumeData.employmentHistory[0]?.startDate || ''}
-                    onChange={(e) => handleInputChange('employmentHistory', 'startDate', e.target.value)}
-                    className="w-1/2 p-2 border rounded"
+                    placeholder="Job Title, Company"
+                    value={job.jobTitle}
+                    onChange={(e) => handleInputChange('employmentHistory', 'jobTitle', e.target.value, index)}
+                    className="w-full mb-2 p-2 border rounded"
                   />
                   <input
                     type="text"
-                    placeholder="End Date"
-                    value={resumeData.employmentHistory[0]?.endDate || ''}
-                    onChange={(e) => handleInputChange('employmentHistory', 'endDate', e.target.value)}
-                    className="w-1/2 p-2 border rounded"
+                    placeholder="Location"
+                    value={job.location}
+                    onChange={(e) => handleInputChange('employmentHistory', 'location', e.target.value, index)}
+                    className="w-full mb-2 p-2 border rounded"
+                  />
+                  <div className='flex gap-2 mb-2'>
+                    <input
+                      type="date"
+                      placeholder="Start Date"
+                      value={job.startDate}
+                      onChange={(e) => handleInputChange('employmentHistory', 'startDate', e.target.value, index)}
+                      className="w-1/2 p-2 border rounded"
+                    />
+                    <input
+                      type="date"
+                      placeholder="End Date"
+                      value={job.endDate}
+                      onChange={(e) => handleInputChange('employmentHistory', 'endDate', e.target.value, index)}
+                      className="w-1/2 p-2 border rounded"
+                    />
+                  </div>
+                  <textarea
+                    placeholder="Job responsibilities..."
+                    value={job.responsibilities}
+                    onChange={(e) => handleInputChange('employmentHistory', 'responsibilities', e.target.value, index)}
+                    className="w-full p-2 border rounded h-24"
                   />
                 </div>
-                <textarea
-                  placeholder="Job responsibilities..."
-                  value={resumeData.employmentHistory[0]?.responsibilities || ''}
-                  onChange={(e) => handleInputChange('employmentHistory', 'responsibilities', e.target.value)}
-                  className="w-full p-2 border rounded h-24"
-                />
-              </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddEmployment}
+                className="text-sm text-blue-500 hover:text-blue-600 flex items-center"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                </svg>
+                Add another employment
+              </button>
             </div>
           </div>
 
@@ -189,14 +246,14 @@ console.log("Document written with ID: ", docRef.id);
               />
               <div className='flex gap-2 mb-2'>
                 <input
-                  type="text"
+                  type="date"
                   placeholder="Start Date"
                   value={resumeData.education.startDate}
                   onChange={(e) => handleInputChange('education', 'startDate', e.target.value)}
                   className="w-1/2 p-2 border rounded"
                 />
                 <input
-                  type="text"
+                  type="date"
                   placeholder="End Date"
                   value={resumeData.education.endDate}
                   onChange={(e) => handleInputChange('education', 'endDate', e.target.value)}
@@ -217,27 +274,30 @@ console.log("Document written with ID: ", docRef.id);
           <div className='mb-6'>
             <h2 className='text-xl font-bold mb-2'>LINKS</h2>
             <div className='space-y-2'>
-              <div className='flex gap-2'>
-                <select 
-                  className="w-1/4 p-2 border rounded"
-                  value={resumeData.links[0].platform}
-                  onChange={(e) => handleInputChange('links', 'platform', e.target.value)}
-                >
-                  <option value="linkedin">LinkedIn</option>
-                  <option value="github">GitHub</option>
-                  <option value="portfolio">Portfolio</option>
-                  <option value="other">Other</option>
-                </select>
-                <input
-                  type="url"
-                  placeholder="https://..."
-                  value={resumeData.links[0].url}
-                  onChange={(e) => handleInputChange('links', 'url', e.target.value)}
-                  className="w-3/4 p-2 border rounded"
-                />
-              </div>
+              {resumeData.links.map((link, index) => (
+                <div key={index} className='flex gap-2'>
+                  <select 
+                    className="w-1/4 p-2 border rounded"
+                    value={link.platform}
+                    onChange={(e) => handleInputChange('links', 'platform', e.target.value, index)}
+                  >
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="github">GitHub</option>
+                    <option value="portfolio">Portfolio</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <input
+                    type="url"
+                    placeholder="https://..."
+                    value={link.url}
+                    onChange={(e) => handleInputChange('links', 'url', e.target.value, index)}
+                    className="w-3/4 p-2 border rounded"
+                  />
+                </div>
+              ))}
               <button
                 type="button"
+                onClick={handleAddLink}
                 className="text-sm text-blue-500 hover:text-blue-600 flex items-center"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
@@ -254,6 +314,7 @@ console.log("Document written with ID: ", docRef.id);
               onClick={() => setResumeData({
                 personalInfo: { fullName: '', address: '', email: '' },
                 professionalSummary: '',
+                skills: [] as string[],
                 employmentHistory: [{
                   jobTitle: '',
                   location: '',
@@ -261,8 +322,14 @@ console.log("Document written with ID: ", docRef.id);
                   endDate: '',
                   responsibilities: ''
                 }] as EmploymentEntry[],
-                education: { schoolName: '', location: '', startDate: '', endDate: '', qualifications: '', degree: '' },
-                links: [{ platform: 'linkedin', url: '' }],
+                education: { 
+                  schoolName: '', 
+                  location: '', 
+                  startDate: '', 
+                  endDate: '', 
+                  qualifications: '' 
+                },
+                links: [{ platform: 'linkedin', url: '' }]
               })}
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
             >
