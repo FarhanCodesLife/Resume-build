@@ -101,8 +101,8 @@ console.log("Document written with ID: ", docRef.id);
     // Add your Firestore push logic here
     console.log('Resume Data:', resumeData)
     localStorage.setItem('resumeId', docRef.id)
-
-    router.push(`/resume/simple/download`)
+    
+    router.push(`/resume/simple/${docRef.id}`)
 
     
 
