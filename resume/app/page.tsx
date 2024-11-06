@@ -1,6 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
-import Login from './login/page'
 import Navbar from './components/navbar'
 export default function HomePage() {
   return (

@@ -35,7 +35,7 @@ React.useEffect(() => {
     signInWithEmailAndPassword(auth, formData.email, formData.password)
       .then((userCredential) => {
         // Signed in 
-        const user = userCredential.user;
+        const _user = userCredential.user;
         alert('Login successful')
 
         router.push('/resume') 
@@ -97,18 +97,16 @@ React.useEffect(() => {
           </div>
           
           <button
-          loading={loading} 
-          
-          
             type="submit"
-            className=" w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+            disabled={loading}
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
           >
-            Sign in
+            {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/signup" className="font-medium text-blue-600 hover:text-blue-500">
               Create an account
             </Link>

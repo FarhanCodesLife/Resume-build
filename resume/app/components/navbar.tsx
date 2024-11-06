@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import Login from '../login/page'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { auth } from '../firebase/config'
 function navbar() {
