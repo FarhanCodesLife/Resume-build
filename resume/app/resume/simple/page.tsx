@@ -97,6 +97,7 @@ console.log("Document written with ID: ", docRef.id);
     // Add your Firestore push logic here
     console.log('Resume Data:', resumeData)
     alert(`Resume saved with ID: ${docRef.id}`);
+    
 
   }
 
@@ -123,6 +124,7 @@ console.log("Document written with ID: ", docRef.id);
           <div className='mb-6'>
             <input
               type="text"
+              required
               placeholder="Full Name"
               value={resumeData.personalInfo.fullName}
               onChange={(e) => handleInputChange('personalInfo', 'fullName', e.target.value)}
@@ -130,6 +132,7 @@ console.log("Document written with ID: ", docRef.id);
             />
             <input
               type="text"
+              required
               placeholder="Address"
               value={resumeData.personalInfo.address}
               onChange={(e) => handleInputChange('personalInfo', 'address', e.target.value)}
@@ -137,6 +140,7 @@ console.log("Document written with ID: ", docRef.id);
             />
             <input
               type="email"
+              required
               placeholder="Email"
               value={resumeData.personalInfo.email}
               onChange={(e) => handleInputChange('personalInfo', 'email', e.target.value)}
@@ -148,6 +152,7 @@ console.log("Document written with ID: ", docRef.id);
           <div className='mb-6'>
             <h2 className='text-xl font-bold mb-2'>PROFESSIONAL SUMMARY</h2>
             <textarea
+              required
               placeholder="Enter your professional summary..."
               value={resumeData.professionalSummary}
               onChange={(e) => handleInputChange('professionalSummary', '', e.target.value)}
@@ -159,6 +164,7 @@ console.log("Document written with ID: ", docRef.id);
           <div className='mb-6'>
             <h2 className='text-xl font-bold mb-2'>SKILLS</h2>
             <textarea
+              required
               placeholder="Enter your skills (comma-separated)..."
               value={resumeData.skills.join(', ')}
               onChange={(e) => handleSkillsChange(e.target.value)}
@@ -232,6 +238,7 @@ console.log("Document written with ID: ", docRef.id);
             <div className='border p-4 rounded'>
               <input
                 type="text"
+                required
                 placeholder="School Name"
                 value={resumeData.education.schoolName}
                 onChange={(e) => handleInputChange('education', 'schoolName', e.target.value)}
@@ -239,6 +246,7 @@ console.log("Document written with ID: ", docRef.id);
               />
               <input
                 type="text"
+                required
                 placeholder="Location"
                 value={resumeData.education.location}
                 onChange={(e) => handleInputChange('education', 'location', e.target.value)}
@@ -262,6 +270,7 @@ console.log("Document written with ID: ", docRef.id);
               </div>
               <input
                 type="text"
+                required
                 placeholder="Qualifications"
                 value={resumeData.education.qualifications}
                 onChange={(e) => handleInputChange('education', 'qualifications', e.target.value)}
@@ -277,6 +286,7 @@ console.log("Document written with ID: ", docRef.id);
               {resumeData.links.map((link, index) => (
                 <div key={index} className='flex gap-2'>
                   <select 
+                    required
                     className="w-1/4 p-2 border rounded"
                     value={link.platform}
                     onChange={(e) => handleInputChange('links', 'platform', e.target.value, index)}
