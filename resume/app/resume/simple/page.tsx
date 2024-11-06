@@ -104,11 +104,11 @@ console.log("Document written with ID: ", docRef.id);
   return (
     <>
       <Navbar />
-      <div className='min-h-screen mt-10 bg-gray-100 p-8'>
-        <div className='max-w-3xl mx-auto mb-6 flex justify-end space-x-4'>
+      <div className='min-h-screen mt-10 bg-gray-100 p-4 sm:p-8'>
+        <div className='max-w-3xl mx-auto mb-6 flex justify-end space-x-4 px-2 sm:px-0'>
           <button
             type="button"
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center"
+            className="bg-green-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded hover:bg-green-600 flex items-center text-sm sm:text-base"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -116,19 +116,18 @@ console.log("Document written with ID: ", docRef.id);
             </svg>
             Preview
           </button>
-         
         </div>
 
-        <form onSubmit={handleSubmit} className='max-w-3xl mx-auto bg-white p-6 rounded-lg shadow'>
+        <form onSubmit={handleSubmit} className='max-w-3xl mx-auto bg-white p-4 sm:p-6 rounded-lg shadow'>
           {/* Personal Information */}
-          <div className='mb-6'>
+          <div className='mb-4 sm:mb-6'>
             <input
               type="text"
               required
               placeholder="Full Name"
               value={resumeData.personalInfo.fullName}
               onChange={(e) => handleInputChange('personalInfo', 'fullName', e.target.value)}
-              className="text-3xl font-bold w-full mb-2 p-2 border rounded"
+              className="text-2xl sm:text-3xl font-bold w-full mb-2 p-2 border rounded"
             />
             <input
               type="text"
@@ -176,11 +175,11 @@ console.log("Document written with ID: ", docRef.id);
           </div>
 
           {/* Employment History */}
-          <div className='mb-6'>
+          <div className='mb-4 sm:mb-6'>
             <h2 className='text-xl font-bold mb-2'>EMPLOYMENT HISTORY</h2>
             <div className='space-y-4'>
               {resumeData.employmentHistory.map((job, index) => (
-                <div key={index} className='border p-4 rounded'>
+                <div key={index} className='border p-3 sm:p-4 rounded'>
                   <input
                     type="text"
                     placeholder="Job Title, Company"
@@ -195,20 +194,20 @@ console.log("Document written with ID: ", docRef.id);
                     onChange={(e) => handleInputChange('employmentHistory', 'location', e.target.value, index)}
                     className="w-full mb-2 p-2 border rounded"
                   />
-                  <div className='flex gap-2 mb-2'>
+                  <div className='flex flex-col sm:flex-row gap-2 mb-2'>
                     <input
                       type="date"
                       placeholder="Start Date"
                       value={job.startDate}
                       onChange={(e) => handleInputChange('employmentHistory', 'startDate', e.target.value, index)}
-                      className="w-1/2 p-2 border rounded"
+                      className="w-full sm:w-1/2 p-2 border rounded"
                     />
                     <input
                       type="date"
                       placeholder="End Date"
                       value={job.endDate}
                       onChange={(e) => handleInputChange('employmentHistory', 'endDate', e.target.value, index)}
-                      className="w-1/2 p-2 border rounded"
+                      className="w-full sm:w-1/2 p-2 border rounded"
                     />
                   </div>
                   <textarea
@@ -280,14 +279,14 @@ console.log("Document written with ID: ", docRef.id);
           </div>
 
           {/* Links Section - New Addition */}
-          <div className='mb-6'>
+          <div className='mb-4 sm:mb-6'>
             <h2 className='text-xl font-bold mb-2'>LINKS</h2>
             <div className='space-y-2'>
               {resumeData.links.map((link, index) => (
-                <div key={index} className='flex gap-2'>
+                <div key={index} className='flex flex-col sm:flex-row gap-2'>
                   <select 
                     required
-                    className="w-1/4 p-2 border rounded"
+                    className="w-full sm:w-1/4 p-2 border rounded"
                     value={link.platform}
                     onChange={(e) => handleInputChange('links', 'platform', e.target.value, index)}
                   >
@@ -301,7 +300,7 @@ console.log("Document written with ID: ", docRef.id);
                     placeholder="https://..."
                     value={link.url}
                     onChange={(e) => handleInputChange('links', 'url', e.target.value, index)}
-                    className="w-3/4 p-2 border rounded"
+                    className="w-full sm:w-3/4 p-2 border rounded"
                   />
                 </div>
               ))}
@@ -318,7 +317,7 @@ console.log("Document written with ID: ", docRef.id);
             </div>
           </div>
 
-          <div className='flex justify-end mt-6 space-x-4'>
+          <div className='flex flex-col sm:flex-row justify-end mt-6 space-y-2 sm:space-y-0 sm:space-x-4'>
             <button
               type="button"
               onClick={() => setResumeData({
@@ -341,13 +340,13 @@ console.log("Document written with ID: ", docRef.id);
                 },
                 links: [{ platform: 'linkedin', url: '' }]
               })}
-              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+              className="w-full sm:w-auto bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
             >
               Clear Form
             </button>
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
               Generate Resume
             </button>
