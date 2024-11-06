@@ -1,0 +1,54 @@
+[debug] [2024-11-06T20:22:48.589Z] ----------------------------------------------------------------------
+[debug] [2024-11-06T20:22:48.614Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\lenovo\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-11-06T20:22:48.616Z] CLI Version:   13.21.0
+[debug] [2024-11-06T20:22:48.616Z] Platform:      win32
+[debug] [2024-11-06T20:22:48.617Z] Node Version:  v20.18.0
+[debug] [2024-11-06T20:22:48.618Z] Time:          Thu Nov 07 2024 01:22:48 GMT+0500 (Pakistan Standard Time)
+[debug] [2024-11-06T20:22:48.618Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-06T20:22:48.631Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-11-06T20:22:48.792Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-11-06T20:22:48.794Z] > authorizing via signed-in user (farhansmit0318@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\lenovo\Desktop\SMIT\03-functionality-Base-Website\Resume-build
+
+[debug] [2024-11-06T20:22:49.641Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-11-06T20:22:49.643Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-11-06T20:23:09.112Z] Checked if tokens are valid: false, expires at: 1730404051440
+[debug] [2024-11-06T20:23:09.113Z] Checked if tokens are valid: false, expires at: 1730404051440
+[debug] [2024-11-06T20:23:09.114Z] > refreshing access token with scopes: []
+[debug] [2024-11-06T20:23:09.118Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-11-06T20:23:09.119Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-06T20:23:10.131Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-11-06T20:23:10.132Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-06T20:23:10.181Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-11-06T20:23:11.046Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-11-06T20:23:11.047Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project resumes-build (resumes-build) 
+[info] 
+=== Hosting Setup
+[debug] [2024-11-06T20:23:32.399Z] Checked if tokens are valid: true, expires at: 1730928189133
+[debug] [2024-11-06T20:23:32.400Z] Checked if tokens are valid: true, expires at: 1730928189133
+[debug] [2024-11-06T20:23:32.402Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/resumes-build [none]
+[debug] [2024-11-06T20:23:33.055Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/resumes-build 200
+[debug] [2024-11-06T20:23:33.056Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/resumes-build {"projectId":"resumes-build","projectNumber":"702837663349","displayName":"resumes-build","name":"projects/resumes-build","resources":{"hostingSite":"resumes-build"},"state":"ACTIVE","etag":"1_7ea4499a-4e82-416a-88a8-a39b70dc4818"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
