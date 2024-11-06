@@ -1,7 +1,7 @@
 import Navbar from '@/app/components/navbar'
 import React from 'react'
 
-export default function page() {
+const page = () => {
   return (
     <>
     <Navbar />
@@ -9,3 +9,5 @@ export default function page() {
     </>
   )
 }
+
+export default page
