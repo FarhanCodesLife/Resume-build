@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import Link from 'next/link'
-import Navbar from '../components/navbar'
+import Navbar from '../components/Navbar'
 import {  onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase/config';
 import { useRouter } from 'next/navigation';
@@ -33,9 +33,8 @@ React.useEffect(() => {
     console.log('Login attempt:', formData)
 
     signInWithEmailAndPassword(auth, formData.email, formData.password)
-      .then((userCredential) => {
+      .then(() => {
         // Signed in 
-        const _user = userCredential.user;
         alert('Login successful')
 
         router.push('/resume') 

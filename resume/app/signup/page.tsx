@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Navbar from '../components/navbar'
+import Navbar from '../components/Navbar'
 import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase/config';
 const Signup = () => {

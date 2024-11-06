@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from '../components/navbar'
+import Navbar from '../components/Navbar'
 import Image from 'next/image'
 import simpleimage from '../../public/carousel_cv20.webp'
 import professionalimage from '../../public/carousel_cv14.webp'

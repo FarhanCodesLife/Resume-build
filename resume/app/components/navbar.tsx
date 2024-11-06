@@ -4,7 +4,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { auth } from '../firebase/config'
-function navbar() {
+
+export default function Navbar() {
     const [user, setUser] = useState<User | null>(null)
     const [login, setLogin] = useState(false)
     React.useEffect(() => {
@@ -79,5 +80,3 @@ function navbar() {
     
   )
 }
-
-export default navbar

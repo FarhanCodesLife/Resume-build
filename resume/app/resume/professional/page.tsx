@@ -1,4 +1,4 @@
-import Navbar from '@/app/components/navbar'
+import Navbar from '@/app/components/Navbar'
 import React from 'react'
 
 const page = () => {

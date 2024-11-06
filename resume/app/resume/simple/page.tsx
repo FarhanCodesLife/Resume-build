@@ -1,5 +1,5 @@
 'use client'
-import Navbar from '@/app/components/navbar'
+import Navbar from '@/app/components/Navbar'
 import React, { useState } from 'react'
 import { collection, addDoc } from "firebase/firestore"; 
 import { db } from '@/app/firebase/config';
