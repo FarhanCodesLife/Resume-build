@@ -189,9 +189,9 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+          <div className="flex flex-col items-center border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
             <p>&copy; {new Date().getFullYear()} Resume Builder. All rights reserved.</p>
-            <p>created by <a href="https://www.linkedin.com/in/kunal-sharma-000000000000000000/" className="text-gray-400 hover:text-white">Muhammad Farhan</a></p>
+            <p>created by <a href="https://github.com/MUHAMMADFARHANHANIF" className="text-gray-400 hover:text-white">Muhammad Farhan</a></p>
           </div>
         </div>
       </footer>
