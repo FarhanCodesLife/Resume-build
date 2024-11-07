@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import { collection, addDoc, updateDoc } from "firebase/firestore"; 
 import { auth, db } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
+import { onAuthStateChanged } from 'firebase/auth';
+
 
 
 interface EmploymentEntry {
@@ -46,6 +48,22 @@ const Page = () => {
   })
 
   const router = useRouter()
+
+
+  React.useEffect(() => {
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        console.log(uid)
+        return uid
+
+      } else {
+        router.push('/login')
+      }
+    });
+}, [router])
+
   // Add new function to handle adding links
   const handleAddLink = () => {
     setResumeData(prev => ({
