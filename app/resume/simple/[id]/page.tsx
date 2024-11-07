@@ -1,18 +1,15 @@
 'use client'
-import Navbar from '@/app/components/Navbar'
 import React, { useEffect, useState } from 'react'
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '@/app/firebase/config'
 import { DocumentData } from 'firebase/firestore'
-import { FaFilePdf, FaGoogleDrive } from 'react-icons/fa';
+import { FaFilePdf, FaLink } from 'react-icons/fa';
 import html2pdf from 'html2pdf.js';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/app/firebase/config';
 
 const Page = () => {
     const [resumeData, setResumeData] = useState<DocumentData | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [isGoogleAPILoaded, setGoogleAPILoaded] = useState(false);
+    const [copySuccess, setCopySuccess] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,15 +40,6 @@ const Page = () => {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        if (!isGoogleAPILoaded) {
-            const script = document.createElement('script');
-            script.src = 'https://apis.google.com/js/api.js';
-            script.onload = () => setGoogleAPILoaded(true);
-            document.body.appendChild(script);
-        }
-    }, [isGoogleAPILoaded]);
-
     const handlePdfDownload = () => {
         const element = document.getElementById('resume-content');
         const opt = {
@@ -65,94 +53,16 @@ const Page = () => {
         html2pdf().set(opt).from(element).save();
     };
 
-    const handleGoogleDriveExport = async () => {
-        try {
-            if (!isGoogleAPILoaded) {
-                alert("Google API script is not loaded yet. Please wait.");
-                return;
-            }
-
-            const element = document.getElementById('resume-content');
-            const opt = {
-                margin: [0, 0, 0, 0],
-                filename: `${resumeData?.personalInfo.fullName || 'resume'}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-
-            const pdfBlob = await html2pdf().set(opt).from(element).output('blob');
-
-            const accessToken = await getGoogleAccessToken();
-            if (!accessToken) {
-                throw new Error('Failed to get Google access token');
-            }
-
-            const fileName = `${resumeData?.personalInfo.fullName || 'resume'}.pdf`;
-
-            const formData = new FormData();
-            formData.append('metadata', new Blob([JSON.stringify({
-                name: fileName,
-                mimeType: 'application/pdf'
-            })], { type: 'application/json' }));
-            formData.append('file', pdfBlob);
-
-            const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to upload to Google Drive');
-            }
-
-            alert('Successfully exported to Google Drive!');
-        } catch (error) {
-            console.error('Error exporting to Google Drive:', error);
-            alert('Failed to export to Google Drive. Please try again.');
-        }
-    };
-
-    const getGoogleAccessToken = async () => {
-        const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-        if (!clientId) {
-            throw new Error('Google Client ID is not configured');
-        }
-
-        await new Promise((resolve) => {
-            const script = document.createElement('script');
-            script.src = 'https://apis.google.com/js/api.js';
-            script.onload = resolve;
-            document.body.appendChild(script);
+    const handleShareLink = () => {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+            setCopySuccess(true);
+            setTimeout(() => setCopySuccess(false), 2000);
         });
-
-        await new Promise<void>((resolve) => {
-            window.gapi.load('client:auth2', () => resolve());
-        });
-
-        await window.gapi.client.init({
-            clientId: clientId,
-            scope: 'https://www.googleapis.com/auth/drive.file'
-        });
-
-        const authInstance = window.gapi.auth2.getAuthInstance();
-
-        if (!authInstance.isSignedIn.get()) {
-            await authInstance.signIn();
-        }
-
-        const currentUser = authInstance.currentUser.get();
-        const accessToken = currentUser.getAuthResponse().access_token;
-        
-        return accessToken;
     };
 
     return (
         <>
-            <Navbar />
             <div className="container mt-10 mx-auto p-4 max-w-3xl">
                 {error && <div className="text-red-500">{error}</div>}
                 {resumeData && (
@@ -165,16 +75,16 @@ const Page = () => {
                                 <FaFilePdf /> Download PDF
                             </button>
                             <button
-                                onClick={handleGoogleDriveExport}
+                                onClick={handleShareLink}
                                 className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                             >
-                                <FaGoogleDrive /> Export to Drive
+                                <FaLink /> {copySuccess ? 'Copied!' : 'Copy Share Link'}
                             </button>
                         </div>
                         <div id="resume-content" className='bg-white p-8 rounded-lg space-y-6'>
                             {/* Header Section */}
                             <div className="space-y-2">
-                                <h1 className='text-3xl font-bold text-blue-600'>{resumeData.personalInfo.fullName}</h1>
+                                <h1 className='text-3xl font-bold text-blue-600'>{resumeData.personalInfo.fullName.toUpperCase()}</h1>
                                 <div className="text-sm">
                                     <p>{resumeData.personalInfo.address}</p>
                                     <p>{resumeData.personalInfo.email}</p>
