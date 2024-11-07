@@ -112,7 +112,7 @@ const Page = () => {
                             {/* Employment History */}
                             <div>
                                 <h2 className="text-lg font-bold border-b border-gray-300 pb-1 mb-2">EMPLOYMENT HISTORY</h2>
-                                {resumeData.employmentHistory?.map((job: any, index: number) => (
+                                {resumeData.employmentHistory?.map((job: { jobTitle: string, location: string, startDate: string, endDate: string, responsibilities: string }, index: number) => (
                                     <div key={index} className="mb-4">
                                         <div className="flex justify-between">
                                             <div>
@@ -149,7 +149,7 @@ const Page = () => {
                             {resumeData.links && resumeData.links.length > 0 && (
                                 <div>
                                     <h2 className="text-lg font-bold border-b border-gray-300 pb-1 mb-2">LINKS</h2>
-                                    {resumeData.links.map((link: any, index: number) => (
+                                    {resumeData.links.map((link: {url: string, platform: string}, index: number) => (
                                         <div key={index} className="mb-2">
                                             <a href={link.url} target="_blank" rel="noopener noreferrer" 
                                                className="text-blue-600 hover:underline">

@@ -101,7 +101,7 @@ const Page = () => {
                             {/* Employment History - Updated styling */}
                             <div className="mb-6">
                                 <h2 className="bg-[#33A9DE] text-white py-1 px-4 mb-2">EMPLOYMENT HISTORY</h2>
-                                {resumeData.employmentHistory?.map((job: any, index: number) => (
+                                {resumeData.employmentHistory?.map((job: { jobTitle: string, location: string, startDate: string, endDate: string, responsibilities: string }, index: number) => (
                                     <div key={index} className="mb-4">
                                         <div className="flex items-center gap-2">
                                             <span className="text-[#33A9DE] text-sm">●</span>
@@ -167,7 +167,7 @@ const Page = () => {
                             {resumeData.links && (
                                 <div className="mb-6">
                                     <h2 className="bg-[#33A9DE] text-white py-1 px-4 mb-2">LINKS</h2>
-                                    {resumeData.links.map((link: any, index: number) => (
+                                    {resumeData.links.map((link: {platform: string, url: string}, index: number) => (
                                         <div key={index} className="flex items-center gap-2">
                                             <span className="text-[#33A9DE] text-sm">●</span>
                                             <div className="flex-1">
