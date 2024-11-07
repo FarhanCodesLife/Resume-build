@@ -1,8 +1,10 @@
 'use client'
 import Navbar from '@/app/components/Navbar'
 import React, { useState } from 'react'
-import { collection, addDoc } from "firebase/firestore"; 
-import { db } from '@/app/firebase/config';
+import { collection, addDoc, updateDoc } from "firebase/firestore"; 
+import { auth, db } from '@/app/firebase/config';
+import { useRouter } from 'next/navigation';
+
 
 interface EmploymentEntry {
   jobTitle?: string;
@@ -42,6 +44,7 @@ const Page = () => {
     }]
   })
 
+  const router = useRouter()
   // Add new function to handle adding links
   const handleAddLink = () => {
     setResumeData(prev => ({
@@ -89,16 +92,25 @@ const Page = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-// Add a new document with a generated id.
-const docRef = await addDoc(collection(db, "simpleresumes"), {
-  resumeData
-});
-console.log("Document written with ID: ", docRef.id);
-    // Add your Firestore push logic here
-    console.log('Resume Data:', resumeData)
-    alert(`Resume saved with ID: ${docRef.id}`);
-    
+    try {
+      // First create the document to get the ID
+      const docRef = await addDoc(collection(db, "simpleresumes"), {
+        ...resumeData,
+        createdAt: new Date(),
+        userId: auth.currentUser?.uid
+      });
 
+      // Update the same document to include its ID
+      await updateDoc(docRef, {
+        id: docRef.id
+      });
+
+      console.log("Document written with ID: ", docRef.id);
+      localStorage.setItem('resumeId', docRef.id)
+      router.push(`/resume/simple/${docRef.id}`)
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   }
 
   return (
