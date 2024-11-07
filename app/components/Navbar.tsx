@@ -31,6 +31,7 @@ export default function Navbar() {
     setLogin(false)
     // Sign-out successful.
   }).catch((error) => {
+    console.log(error)
     // An error happened.
   });
 }
