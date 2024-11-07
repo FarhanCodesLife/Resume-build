@@ -9,11 +9,7 @@ import html2pdf from 'html2pdf.js';
 const Page = () => {
     const [resumeData, setResumeData] = useState<DocumentData | null>(null);
     const [error, setError] = useState<string | null>(null);
-<<<<<<< HEAD
     const [copySuccess, setCopySuccess] = useState<boolean>(false);
-=======
-    const [isGoogleAPILoaded, setGoogleAPILoaded] = useState(false);
->>>>>>> f8e0abdcfe7803e046ea72c9cb3c9cd240597b58
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,19 +40,10 @@ const Page = () => {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        if (!isGoogleAPILoaded) {
-            const script = document.createElement('script');
-            script.src = 'https://apis.google.com/js/api.js';
-            script.onload = () => setGoogleAPILoaded(true);
-            document.body.appendChild(script);
-        }
-    }, [isGoogleAPILoaded]);
-
     const handlePdfDownload = () => {
         const element = document.getElementById('resume-content');
         const opt = {
-            margin: [0, 0, 0, 0], // top, right, bottom, left margins
+            margin: [0, 0, 0, 0],
             filename: `${resumeData?.personalInfo.fullName || 'resume'}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
@@ -66,98 +53,12 @@ const Page = () => {
         html2pdf().set(opt).from(element).save();
     };
 
-<<<<<<< HEAD
     const handleShareLink = () => {
         const url = window.location.href;
         navigator.clipboard.writeText(url).then(() => {
             setCopySuccess(true);
             setTimeout(() => setCopySuccess(false), 2000);
         });
-=======
-    const handleGoogleDriveExport = async () => {
-        try {
-            if (!isGoogleAPILoaded) {
-                alert("Google API script is not loaded yet. Please wait.");
-                return;
-            }
-
-            const element = document.getElementById('resume-content');
-            const opt = {
-                margin: [0, 0, 0, 0],
-                filename: `${resumeData?.personalInfo.fullName || 'resume'}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-
-            const pdfBlob = await html2pdf().set(opt).from(element).output('blob');
-
-            const accessToken = await getGoogleAccessToken();
-            if (!accessToken) {
-                throw new Error('Failed to get Google access token');
-            }
-
-            const fileName = `${resumeData?.personalInfo.fullName || 'resume'}.pdf`;
-
-            const formData = new FormData();
-            formData.append('metadata', new Blob([JSON.stringify({
-                name: fileName,
-                mimeType: 'application/pdf'
-            })], { type: 'application/json' }));
-            formData.append('file', pdfBlob);
-
-            const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to upload to Google Drive');
-            }
-
-            alert('Successfully exported to Google Drive!');
-        } catch (error) {
-            console.error('Error exporting to Google Drive:', error);
-            alert('Failed to export to Google Drive. Please try again.');
-        }
-    };
-
-    const getGoogleAccessToken = async () => {
-        const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-        if (!clientId) {
-            throw new Error('Google Client ID is not configured');
-        }
-
-        await new Promise((resolve) => {
-            const script = document.createElement('script');
-            script.src = 'https://apis.google.com/js/api.js';
-            script.onload = resolve;
-            document.body.appendChild(script);
-        });
-
-        await new Promise<void>((resolve) => {
-            window.gapi.load('client:auth2', () => resolve());
-        });
-
-        await window.gapi.client.init({
-            clientId: clientId,
-            scope: 'https://www.googleapis.com/auth/drive.file'
-        });
-
-        const authInstance = window.gapi.auth2.getAuthInstance();
-
-        if (!authInstance.isSignedIn.get()) {
-            await authInstance.signIn();
-        }
-
-        const currentUser = authInstance.currentUser.get();
-        const accessToken = currentUser.getAuthResponse().access_token;
-        
-        return accessToken;
->>>>>>> f8e0abdcfe7803e046ea72c9cb3c9cd240597b58
     };
 
     return (
