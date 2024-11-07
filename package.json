@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-cloud/local-auth": "^3.0.1",
     "firebase": "^11.0.1",
+    "googleapis": "^144.0.0",
     "html2pdf.js": "^0.10.2",
     "next": "15.0.2",
     "react": "19.0.0-rc-02c0e824-20241028",
